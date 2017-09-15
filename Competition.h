@@ -44,8 +44,8 @@ task main() {
 		} else if (COMP_autonomous_on && autonomous_competition && !bIfiAutonomousMode) {
       // Forcefully terminate autonomous if the competition mode says so.
 			expected = JOYSTICK_RUNNING;
-	  } else if (current == JOYSTICK_RUNNING && !COMP_autonomous_on) {
-	    // Notice when autonomous finishes on its own
+	  } else if (!COMP_autonomous_on) {
+	    // Notice when autonomous finishes on its own.
 	    expected = JOYSTICK_RUNNING;
 	  }
 
