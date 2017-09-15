@@ -2,13 +2,26 @@
 
 This repository contains code that can be shared between all the teams.
 
-In your program, you can include a piece of shared code like so:
+The main one is the _Competition code_. Use is like so:
 
 ```c
-#include "../Shared/Accelerometer.h"
+#include "../Shared/Competition.h"
 
-task main() {
-  // use the functions from the included file
+// Instead of task main(), define the following two functions:
+
+void joystick() {
+  while (true) {
+    // Usual joystick logic.
+  }
+}
+
+void autonomous() {
+  // Write your autonomous here.
   ...
 }
 ```
+
+When you turn the robot on, it will directly start the joystick code. You can trigger
+autonomous mode by pressing _7U_ and _8U_ simultaneously.
+
+If an LCD display is connected, the robot will indicate in which mode it. 
