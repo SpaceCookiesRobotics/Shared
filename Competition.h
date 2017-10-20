@@ -50,12 +50,18 @@ task main() {
 	  }
 
 	  if (current != expected) {
+  		clearLCDLine(0);
 	  	switch (expected) {
+       	case STARTING:
+        	displayLCDCenteredString(0, "Disabled");
+       	  break;
 	  	  case AUTONOMOUS_RUNNING:
+      	  displayLCDCenteredString(0, "Autonomous");
 	  	    stopTask(COMP_driverControlled);
 	  	    startTask(COMP_autonomousTask);
 	  	    break;
 	  	  case JOYSTICK_RUNNING:
+    	    displayLCDCenteredString(0, "Joystick");
 	  	    stopTask(COMP_autonomousTask);
 	  	    startTask(COMP_driverControlled);
 	  	    break;
@@ -63,18 +69,6 @@ task main() {
 	    current = expected;
 	  }
 
-		clearLCDLine(0);
-    switch (current) {
-    	case STARTING:
-      	displayLCDCenteredString(0, "Disabled");
-      	break;
-    	case AUTONOMOUS_RUNNING:
-      	displayLCDCenteredString(0, "Autonomous");
-      	break;
-    	case JOYSTICK_RUNNING:
-    	displayLCDCenteredString(0, "Joystick");
-      	break;
-    }
 		wait1Msec(25);
 	}
 }
