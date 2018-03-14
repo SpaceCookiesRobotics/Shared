@@ -41,6 +41,9 @@ task main() {
 		  // Button 7 Up + Button 8 Up cause autonomous to fire.
 			expected = AUTONOMOUS_RUNNING;
 			autonomous_competition = bIfiAutonomousMode;
+		} else if (COMP_autonomous_on && vexRT[Btn7D] && vexRT[Btn8D]) {
+      // Button 7 Down + Button 8 Down forcefully terminate autonomous.
+			expected = JOYSTICK_RUNNING;
 		} else if (COMP_autonomous_on && autonomous_competition && !bIfiAutonomousMode) {
       // Forcefully terminate autonomous if the competition mode says so.
 			expected = JOYSTICK_RUNNING;

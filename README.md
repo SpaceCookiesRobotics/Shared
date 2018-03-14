@@ -22,6 +22,7 @@ void autonomous() {
 ```
 
 When you turn the robot on, it will directly start the joystick code. You can trigger
-autonomous mode by pressing _7U_ and _8U_ simultaneously.
+autonomous mode by pressing _7U_ and _8U_ simultaneously. You can then cancel the running
+autonomous by pressing _7D_ and _8D_.
 
 If an LCD display is connected, the robot will indicate in which mode it. 
