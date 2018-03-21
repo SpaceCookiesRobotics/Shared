@@ -17,6 +17,8 @@ void joystick() {
 
 void autonomous() {
   // Write your autonomous here.
+  // Optional: force autonomous to stop after that many seconds.
+  stopAutonomousAfter(15);  
   ...
 }
 ```
