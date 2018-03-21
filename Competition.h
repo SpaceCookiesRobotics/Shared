@@ -3,15 +3,15 @@
 void autonomous();
 void joystick();
 
-// If non-zero, will cancel autonomous after that many seconds.
-// This uses TIMER4.
-int COMP_autonomous_duration = 0;
+// If non-zero, will cancel autonomous once timer4 reaches that value.
+int COMP_autonomous_deadline = 0;
 
 // True while autonomous is still running.
 bool COMP_autonomous_on = false;
 
 void stopAutonomousAfter(int seconds) {
-	COMP_autonomous_duration = seconds;
+	clearTimer(timer4);
+	COMP_autonomous_deadline = seconds * 1000;
 }
 
 // This just wraps around the "autonomous" function written for each robot.
@@ -55,8 +55,8 @@ task main() {
 		} else if (COMP_autonomous_on && vexRT[Btn7D] && vexRT[Btn8D]) {
       // Button 7 Down + Button 8 Down forcefully terminate autonomous.
 			expected = JOYSTICK_RUNNING;
-		} else if (COMP_autonomous_on && (autonomous_deadline != 0 &&
-			                                time1[timer4] > autonomous_deadline)) {
+		} else if (COMP_autonomous_on && (COMP_autonomous_deadline != 0 &&
+			                                time1[timer4] > COMP_autonomous_deadline)) {
       // Autonomous ran for its max duration.
 			expected = JOYSTICK_RUNNING;
 		} else if (COMP_autonomous_on && autonomous_competition && !bIfiAutonomousMode) {
@@ -76,10 +76,6 @@ task main() {
 	  	  case AUTONOMOUS_RUNNING:
       	  displayLCDCenteredString(0, "Autonomous");
       	  allTasksStop();
-      	  if (COMP_autonomous_duration > 0) {
-      	  	clearTimer(timer4);
-      	  	autonomous_deadline = COMP_autonomous_duration * 1000;
-      	  }
 	  	    startTask(COMP_autonomousTask);
 	  	    break;
 	  	  case JOYSTICK_RUNNING:
