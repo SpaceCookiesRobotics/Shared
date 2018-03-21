@@ -21,6 +21,9 @@ task COMP_driverControlled() {
   joystick();
 }
 
+// Stop all possible tasks but the main one.
+void allTasksStop();
+
 // main decides whether we are in autonomous or joystick mode and sets up
 // the tasks accordingly.
 task main() {
@@ -60,12 +63,12 @@ task main() {
        	  break;
 	  	  case AUTONOMOUS_RUNNING:
       	  displayLCDCenteredString(0, "Autonomous");
-	  	    stopTask(COMP_driverControlled);
+      	  allTasksStop();
 	  	    startTask(COMP_autonomousTask);
 	  	    break;
 	  	  case JOYSTICK_RUNNING:
     	    displayLCDCenteredString(0, "Joystick");
-	  	    stopTask(COMP_autonomousTask);
+      	  allTasksStop();
 	  	    startTask(COMP_driverControlled);
 	  	    break;
 	    }
@@ -74,4 +77,28 @@ task main() {
 
 		wait1Msec(25);
 	}
+}
+
+void allTasksStop() {
+  stopTask(1);
+  stopTask(2);
+  stopTask(3);
+  stopTask(4);
+#if defined(VEX2)
+  stopTask(5);
+  stopTask(6);
+  stopTask(7);
+  stopTask(8);
+  stopTask(9);
+  stopTask(10);
+  stopTask(11);
+  stopTask(12);
+  stopTask(13);
+  stopTask(14);
+  stopTask(15);
+  stopTask(16);
+  stopTask(17);
+  stopTask(18);
+  stopTask(19);
+#endif
 }
