@@ -50,9 +50,12 @@ void allTasksStop();
 // the tasks accordingly.
 task main() {
 	enum State {
+		// At program startup.
 		STARTING = 0,
-		AUTONOMOUS_RUNNING = 1,
-		JOYSTICK_RUNNING = 2,
+    // During competition, while the robot for the match to start.
+		DISABLED = 1,
+		AUTONOMOUS_RUNNING = 2,
+		JOYSTICK_RUNNING = 3,
 	};
 
 	State current = STARTING;
@@ -61,7 +64,7 @@ task main() {
 	while (true) {
 		State expected;
 		if (bIfiRobotDisabled) {
-			expected = STARTING;
+			expected = DISABLED;
 		} else if ((vexRT[Btn7U] && vexRT[Btn8U]) || bIfiAutonomousMode) {
 		  // Button 7 Up + Button 8 Up cause autonomous to fire.
 			expected = AUTONOMOUS_RUNNING;
@@ -85,6 +88,11 @@ task main() {
   		clearLCDLine(0);
 	  	switch (expected) {
        	case STARTING:
+#ifndef COMP_DISABLE_DISPLAY
+        	displayLCDCenteredString(0, "Starting");
+#endif
+       	  break;
+       	case DISABLED:
 #ifndef COMP_DISABLE_DISPLAY
         	displayLCDCenteredString(0, "Disabled");
 #endif
