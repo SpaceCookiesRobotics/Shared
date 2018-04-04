@@ -3,6 +3,15 @@
 void autonomous();
 void joystick();
 
+#ifdef COMP_HAS_PRE_AUTONOMOUS
+void pre_autonomous();
+#else
+void pre_autonomous() {
+	// This is optional. If the caller has no pre-autonomous code,
+  // provide one that does nothing.
+}
+#endif
+
 // If non-zero, will cancel autonomous once timer4 reaches that value.
 int COMP_autonomous_deadline = 0;
 
@@ -12,6 +21,11 @@ bool COMP_autonomous_on = false;
 void stopAutonomousAfter(int seconds) {
 	clearTimer(timer4);
 	COMP_autonomous_deadline = seconds * 1000;
+}
+
+// This is a wapper around pre_autonomous in case it does not stop.
+task COMP_pre_autonomous() {
+  pre_autonomous();
 }
 
 // This just wraps around the "autonomous" function written for each robot.
@@ -71,15 +85,22 @@ task main() {
   		clearLCDLine(0);
 	  	switch (expected) {
        	case STARTING:
+#ifndef COMP_DISABLE_DISPLAY
         	displayLCDCenteredString(0, "Disabled");
+#endif
+        	startTask(COMP_pre_autonomous);
        	  break;
 	  	  case AUTONOMOUS_RUNNING:
+#ifndef COMP_DISABLE_DISPLAY
       	  displayLCDCenteredString(0, "Autonomous");
+#endif
       	  allTasksStop();
 	  	    startTask(COMP_autonomousTask);
 	  	    break;
 	  	  case JOYSTICK_RUNNING:
+#ifndef COMP_DISABLE_DISPLAY
     	    displayLCDCenteredString(0, "Joystick");
+#endif
       	  allTasksStop();
       	  autonomous_deadline = 0;
 	  	    startTask(COMP_driverControlled);
